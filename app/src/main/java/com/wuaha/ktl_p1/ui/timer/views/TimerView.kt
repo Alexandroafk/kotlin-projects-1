@@ -13,28 +13,36 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
     private var minutes: Int = 0
 
     private var currentTheme: Int = 1
-    private val themes = listOf(
-        Theme(Color.GREEN, Color.BLACK, Color.WHITE),
-        Theme(Color.BLUE, Color.GREEN, Color.BLACK)
-    )
-
     private var currentTextSize: Float = 60f
 
-    private data class Theme(val borderColor: Int, val backgroundColor: Int, val textColor: Int)
+    private val themes = listOf(
+        Theme("#00FF00", "#000000", "#FFFFFF"), // Verde, Negro, Blanco
+        Theme("#0000FF", "#00FF00", "#000000")  // Azul, Verde, Negro
+    )
+
+    private data class Theme(
+        val borderColor: String,
+        val backgroundColor: String,
+        val textColor: String
+    ) {
+        fun getBorderColorInt(): Int = Color.parseColor(borderColor)
+        fun getBackgroundColorInt(): Int = Color.parseColor(backgroundColor)
+        fun getTextColorInt(): Int = Color.parseColor(textColor)
+    }
 
     private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = themes[currentTheme - 1].borderColor
+        color = themes[currentTheme - 1].getBorderColorInt()
         style = Paint.Style.STROKE
         strokeWidth = 8f
     }
 
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = themes[currentTheme - 1].backgroundColor
+        color = themes[currentTheme - 1].getBackgroundColorInt()
         style = Paint.Style.FILL
     }
 
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = themes[currentTheme - 1].textColor
+        color = themes[currentTheme - 1].getTextColorInt()
         textSize = currentTextSize
         textAlign = Paint.Align.CENTER
     }
@@ -43,13 +51,13 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
      * Coloca el tiempo personalizado.
      */
     fun updateTime(newHours: Int, newMinutes: Int) {
-        hours = (newHours % 24 + 24) % 24 // Ensure valid 24-hour format
-        minutes = (newMinutes % 60 + 60) % 60 // Ensure valid 60-minute format
-        invalidate() // Refresh the view
+        hours = (newHours % 24 + 24) % 24 // Asegura formato de 24 horas
+        minutes = (newMinutes % 60 + 60) % 60 // Asegura formato de 60 minutos
+        invalidate()
     }
 
     /**
-     * Añade Minutos a la hora actual
+     * Añade minutos a la hora actual
      */
     fun addMinutes(minutesToAdd: Int) {
         val totalMinutes = hours * 60 + minutes + minutesToAdd
@@ -59,7 +67,7 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
     }
 
     /**
-     * Añade Horas a la hora actual
+     * Añade horas a la hora actual.
      */
     fun addHours(hoursToAdd: Int) {
         hours = (hours + hoursToAdd) % 24
@@ -67,17 +75,7 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
     }
 
     /**
-     * Actualiza los colores basados en el tema actual
-     */
-    private fun updateColors() {
-        borderPaint.color = themes[currentTheme - 1].borderColor
-        backgroundPaint.color = themes[currentTheme - 1].backgroundColor
-        textPaint.color = themes[currentTheme - 1].textColor
-        invalidate()
-    }
-
-    /**
-     * Establece el tema actual
+     * Establece el tema actual por número.
      */
     fun applyTheme(themeNumber: Int) {
         if (themeNumber in 1..themes.size) {
@@ -87,7 +85,18 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
     }
 
     /**
-     * Cambia el tamaño del texto
+     * Actualiza los colores basados en el tema actual.
+     */
+    private fun updateColors() {
+        val theme = themes[currentTheme - 1]
+        borderPaint.color = theme.getBorderColorInt()
+        backgroundPaint.color = theme.getBackgroundColorInt()
+        textPaint.color = theme.getTextColorInt()
+        invalidate()
+    }
+
+    /**
+     * Cambia el tamaño del texto.
      */
     fun setTextSize(newSize: Float) {
         currentTextSize = newSize
@@ -96,7 +105,7 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
     }
 
     /**
-     * Cambia la alineación del texto
+     * Cambia la alineación del texto.
      */
     fun setTextAlignment(newAlignment: Paint.Align) {
         textPaint.textAlign = newAlignment
@@ -106,18 +115,22 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
     /**
      * Obtiene la alineación actual del texto.
      */
-    fun getTimerTextAlignment(): Paint.Align {
+    fun getTimeTextAlignment(): Paint.Align {
         return textPaint.textAlign
     }
 
-    // Método público para obtener currentTheme
+    /**
+     * Obtiene el tema actual.
+     */
     fun getCurrentTheme(): Int {
         return currentTheme
     }
 
-    // Método público para obtener currentTextSize
+    /**
+     * Obtiene el tamaño actual del texto.
+     */
     fun getCurrentTextSize(): Float {
-        return textPaint.textSize
+        return currentTextSize
     }
 
     override fun onDraw(canvas: Canvas) {

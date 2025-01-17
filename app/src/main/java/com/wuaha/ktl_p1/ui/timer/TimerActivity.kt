@@ -17,7 +17,6 @@ class TimerActivity : AppCompatActivity() {
     private lateinit var changeColorButton: Button
     private lateinit var setTextSizeIncreaseButton: Button
     private lateinit var setTextSizeDecreaseButton: Button
-    private lateinit var setTextAlignmentButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
