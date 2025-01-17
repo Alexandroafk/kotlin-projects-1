@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_view_xml"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainActivity">
+
+    <Button
+        android:id="@+id/go_ruleta_button"
+        android:layout_width="274dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="264dp"
+        android:text="Ir a Ruleta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/go_timer_button"
+        android:layout_width="277dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:text="Ir a Temporizadores"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/go_ruleta_button" />
+
+    <Button
+        android:id="@+id/buttonActivity3"
+        android:layout_width="278dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:text="Ir a ***"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/go_timer_button" />
+
+    <Button
+        android:id="@+id/buttonActivity4"
+        android:layout_width="278dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="8dp"
+        android:text="Ir a ***"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonActivity3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
