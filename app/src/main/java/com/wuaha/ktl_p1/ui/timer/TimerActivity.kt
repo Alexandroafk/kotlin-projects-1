@@ -17,6 +17,7 @@ class TimerActivity : AppCompatActivity() {
     private lateinit var changeColorButton: Button
     private lateinit var setTextSizeIncreaseButton: Button
     private lateinit var setTextSizeDecreaseButton: Button
+    private lateinit var changeAttachedTimerTextButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class TimerActivity : AppCompatActivity() {
         changeColorButton = findViewById(R.id.change_color_button)
         setTextSizeIncreaseButton = findViewById(R.id.set_text_size_increase_button)
         setTextSizeDecreaseButton = findViewById(R.id.set_text_size_decrease_button)
+        changeAttachedTimerTextButton = findViewById(R.id.change_attached_timer_text_button)
 
         setupButtons()
     }
@@ -67,6 +69,18 @@ class TimerActivity : AppCompatActivity() {
         setTextSizeDecreaseButton.setOnClickListener {
             val currentTextSize = timerView.getCurrentTextSize()
             timerView.setTextSize(currentTextSize - 10f)
+        }
+
+        // Botón para cambiar el texto adjunto
+        var counter = 1
+        changeAttachedTimerTextButton.setOnClickListener {
+            if (counter < 10) {
+                timerView.setAttachedText("Punto0"+counter)
+                counter++
+            } else {
+                counter = 1
+                timerView.setAttachedText("Punto0"+counter)
+            }
         }
     }
 }

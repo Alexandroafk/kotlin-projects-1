@@ -6,12 +6,13 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import java.util.Locale
 
 class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
 
     private var hours: Int = 0
     private var minutes: Int = 0
-
+    private var attachedText = "Texto adjunto"
     private var currentTheme: Int = 1
     private var currentTextSize: Float = 60f
 
@@ -133,6 +134,11 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
         return currentTextSize
     }
 
+    fun setAttachedText(text: String) {
+        attachedText = text
+        invalidate()
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
@@ -146,7 +152,7 @@ class TimerView(context: Context, attrs: AttributeSet? = null) : View(context, a
         canvas.drawRoundRect(rectLeft, rectTop, rectRight, rectBottom, 30f, 30f, borderPaint)
 
         // Dibuja la hora
-        val timeText = String.format("%02d:%02d", hours, minutes)
+        val timeText = String.format(Locale.getDefault(),"%s %02d:%02d", attachedText, hours, minutes)
         val centerX = width / 2f
         val centerY = height / 2f
         canvas.drawText(timeText, centerX, centerY + textPaint.textSize / 3, textPaint)
