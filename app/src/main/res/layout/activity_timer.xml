@@ -9,12 +9,12 @@
 
     <com.wuaha.ktl_p1.ui.timer.views.TimerView
         android:id="@+id/timer_view_xml"
-        android:layout_width="228dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="99dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/minutes_input"
@@ -95,4 +95,21 @@
         android:text="Ajustar Tamaño Texto -"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/set_text_size_increase_button" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/boton_wifi_icon"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/timer_icon_animated_wifi"
+        app:layout_constraintBottom_toTopOf="@+id/timer_view_xml"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/ic_wifi_animated" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

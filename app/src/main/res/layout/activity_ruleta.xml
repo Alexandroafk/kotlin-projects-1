@@ -53,22 +53,4 @@
         app:layout_constraintTop_toTopOf="@+id/marco_ruleta"
         app:layout_constraintVertical_bias="0.501" />
 
-    <ImageView
-        android:id="@+id/boton_configuraciones_ruleta"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:contentDescription="@string/config_ruleta_button"
-        android:src="@drawable/ajustes_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/boton_volver_main"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:contentDescription="@string/back_main_button"
-        android:src="@drawable/ic_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
