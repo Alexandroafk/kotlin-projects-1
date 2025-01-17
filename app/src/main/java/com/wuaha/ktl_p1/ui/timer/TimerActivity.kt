@@ -14,8 +14,10 @@ class TimerActivity : AppCompatActivity() {
     private lateinit var minutesInput: EditText
     private lateinit var increaseMinutesButton: Button
     private lateinit var increaseHoursButton: Button
-    private lateinit var toggleShowTextButton: Button
     private lateinit var changeColorButton: Button
+    private lateinit var setTextSizeIncreaseButton: Button
+    private lateinit var setTextSizeDecreaseButton: Button
+    private lateinit var setTextAlignmentButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +28,9 @@ class TimerActivity : AppCompatActivity() {
         minutesInput = findViewById(R.id.minutes_input)
         increaseMinutesButton = findViewById(R.id.increase_minutes_button)
         increaseHoursButton = findViewById(R.id.increase_hours_button)
-        toggleShowTextButton = findViewById(R.id.toggle_show_text_button)
         changeColorButton = findViewById(R.id.change_color_button)
+        setTextSizeIncreaseButton = findViewById(R.id.set_text_size_increase_button)
+        setTextSizeDecreaseButton = findViewById(R.id.set_text_size_decrease_button)
 
         setupButtons()
     }
@@ -50,18 +53,21 @@ class TimerActivity : AppCompatActivity() {
             timerView.addHours(1)
         }
 
-        // Botón para mostrar/Ocultar texto adjunto
-        toggleShowTextButton.setOnClickListener {
-            timerView.toggleShowText()
-        }
-
         // Botón para cambiar colores
         changeColorButton.setOnClickListener {
-            // Cambiar los colores al azar, puedes ajustar a colores predeterminados
-            val randomBorderColor = (0xFF000000.toInt()..0xFFFFFF00.toInt()).random()
-            val randomBackgroundColor = (0xFF000000.toInt()..0xFFFFFF00.toInt()).random()
-            val randomTextColor = (0xFF000000.toInt()..0xFFFFFF00.toInt()).random()
-            timerView.setColors(randomBorderColor, randomBackgroundColor, randomTextColor)
+            timerView.applyTheme(if (timerView.getCurrentTheme() == 1) 2 else 1)
+        }
+
+        // Botón para aumentar tamaño del texto
+        setTextSizeIncreaseButton.setOnClickListener {
+            val currentTextSize = timerView.getCurrentTextSize()
+            timerView.setTextSize(currentTextSize + 10f)
+        }
+
+        // Botón para disminuir tamaño del texto
+        setTextSizeDecreaseButton.setOnClickListener {
+            val currentTextSize = timerView.getCurrentTextSize()
+            timerView.setTextSize(currentTextSize - 10f)
         }
     }
 }
