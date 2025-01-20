@@ -21,17 +21,17 @@ class RuletaActivity : AppCompatActivity() {
         ruletaView = findViewById(R.id.ruleta_view_xml)
 
         val opciones = listOf(
-            RuletaOpcion("Opción 1", Color.RED, 10f),
-            RuletaOpcion("Opción 2", Color.BLUE,50f),
-            RuletaOpcion("Opción 3", Color.GREEN, 20f),
-            RuletaOpcion("Opción 4", Color.YELLOW, 5f),
-            RuletaOpcion("Opción 5", Color.MAGENTA, 15f)
+            RuletaOpcion("Opción 1", Color.RED, 5f, 40f),
+            RuletaOpcion("Opción 2", Color.BLUE,10f, 40f),
+            RuletaOpcion("Opción 3", Color.GREEN, 15f, 40f),
+            RuletaOpcion("Opción 4", Color.YELLOW, 3f, 40f),
+            RuletaOpcion("Opción 5", Color.MAGENTA, )
         )
 
         ruletaView.apply {
             setOpciones(opciones)
             // setAnguloSeleccionado(Random.nextFloat() * 360f)
-            setVelocidadAnimacion(8)
+            setVelocidadAnimacion(1)
             setDuracionAnimacion(5000)
 
 //            // Opcional: callback para manejar la selección

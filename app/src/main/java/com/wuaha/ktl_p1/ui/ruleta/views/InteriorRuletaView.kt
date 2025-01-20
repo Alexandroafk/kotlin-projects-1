@@ -23,6 +23,7 @@ class InteriorRuletaView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private var opciones: List<RuletaOpcion> = listOf()
+    private var enableRandomOptions: Boolean = true
     // private var anguloSeleccionado: Float = 0f
     private var velocidadAnimacion: Int = 5
     private var duracionAnimacion: Long = 5000
@@ -54,6 +55,10 @@ class InteriorRuletaView @JvmOverloads constructor(
             return
         }
         invalidate()
+    }
+
+    fun setEnableRandomOptions(enable: Boolean) {
+        enableRandomOptions = enable
     }
 
 //    fun setAnguloSeleccionado(angulo: Float) {
@@ -119,7 +124,13 @@ class InteriorRuletaView @JvmOverloads constructor(
         val radio = centro * 0.95f
         var anguloInicio = 0f
 
-        opciones.forEach { opcion ->
+        val opcionesDibujar = if (enableRandomOptions) {
+            opciones.shuffled()
+        } else {
+            opciones
+        }
+
+        opcionesDibujar.forEach { opcion ->
             val anguloSegmento = (opcion.probabilidad ?: 0f) * 360f / 100f
 
             paint.color = opcion.colorFondo
