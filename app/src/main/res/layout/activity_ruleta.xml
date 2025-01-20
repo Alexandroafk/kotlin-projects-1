@@ -38,19 +38,7 @@
         android:src="@drawable/marcador"
         app:layout_constraintBottom_toBottomOf="@+id/ruleta_view_xml"
         app:layout_constraintEnd_toEndOf="@+id/ruleta_view_xml"
-        app:layout_constraintStart_toEndOf="@+id/boton_girar_ruleta"
         app:layout_constraintTop_toTopOf="@+id/ruleta_view_xml" />
 
-    <ImageView
-        android:id="@+id/boton_girar_ruleta"
-        android:layout_width="273dp"
-        android:layout_height="49dp"
-        android:src="@drawable/boton_girar"
-        app:layout_constraintBottom_toBottomOf="@+id/marco_ruleta"
-        app:layout_constraintEnd_toEndOf="@+id/marco_ruleta"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/marco_ruleta"
-        app:layout_constraintTop_toTopOf="@+id/marco_ruleta"
-        app:layout_constraintVertical_bias="0.501" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

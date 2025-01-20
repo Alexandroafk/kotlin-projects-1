@@ -1,65 +1,65 @@
 package com.wuaha.ktl_p1.ui.ruleta.views
 
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
 import android.util.AttributeSet
-import android.view.View
-import kotlin.math.cos
-import kotlin.math.sin
+import android.view.Gravity
+import android.widget.FrameLayout
+import com.wuaha.ktl_p1.ui.ruleta.data.RuletaOpcion
 
-class RuletaView constructor(
-    context: Context, attrs: AttributeSet? = null
-) : View(context, attrs) {
+class RuletaView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    private val ruletaInterior = InteriorRuletaView(context)
+    private val botonCentral = CentroRuletaView(context)
 
-    private var options = listOf<String>()
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.BLACK
-        textSize = 70f
-        textAlign = Paint.Align.CENTER
-    }
-    private val rectF = RectF()
-    private var sectionAngle: Float = 0f
+    init {
+        addView(ruletaInterior)
+        addView(botonCentral)
 
-    fun setOptions(options: List<String>) {
-        this.options = options
-        sectionAngle = 360f / options.size
-        invalidate()
-    }
+        botonCentral.onClick = {
+            ruletaInterior.girar()
+        }
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-
-        // Configurar el rectángulo para la ruleta
-        val padding = 50f
-        rectF.set(padding, padding, width - padding, height - padding)
-
-        // Dibujar las secciones de la ruleta
-        var startAngle = 0f
-        for (i in options.indices) {
-            paint.color = getRandomColor()
-            canvas.drawArc(rectF, startAngle, sectionAngle, true, paint)
-
-            // Dibujar el texto dentro de la sección
-            val angle = Math.toRadians((startAngle + sectionAngle / 2).toDouble())
-            val textX = (width / 2 + cos(angle) * (rectF.width() / 3)).toFloat()
-            val textY = (height / 2 + sin(angle) * (rectF.height() / 3)).toFloat()
-            canvas.drawText(options[i], textX, textY, textPaint)
-
-            startAngle += sectionAngle
+        // Centrar el botón
+        botonCentral.layoutParams = LayoutParams(
+            LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT
+        ).apply {
+            gravity = Gravity.CENTER
         }
     }
 
-    fun getSelectedIndex(finalAngle: Float): Int {
-        val normalizedAngle = (finalAngle % 360 + 360) % 360 // Asegurar que esté entre 0-360
-        return ((options.size - normalizedAngle / sectionAngle).toInt()) % options.size
+    fun setOpciones(nuevasOpciones: List<RuletaOpcion>) = ruletaInterior.setOpciones(nuevasOpciones)
+    fun setAnguloSeleccionado(angulo: Float) = ruletaInterior.setAnguloSeleccionado(angulo)
+    fun setVelocidadAnimacion(velocidad: Int) = ruletaInterior.setVelocidadAnimacion(velocidad)
+    fun setDuracionAnimacion(duracionMs: Long) = ruletaInterior.setDuracionAnimacion(duracionMs)
+    fun girar(callback: ((RuletaOpcion) -> Unit)? = null) = ruletaInterior.girar(callback)
+
+    fun setBotonTexto(texto: String) {
+        botonCentral.texto = texto
+        botonCentral.invalidate()
     }
 
-    private fun getRandomColor(): Int {
-        return Color.rgb((50..255).random(), (50..255).random(), (50..255).random())
+    fun setBotonRadio(radio: Float) {
+        botonCentral.radioBoton = radio
+        botonCentral.invalidate()
     }
 
+    fun setBotonEstilo(
+        colorFondo: Int = Color.parseColor("#b2f3bb"),
+        colorBorde: Int = Color.BLACK,
+        colorTexto: Int = Color.BLACK,
+        tamañoTexto: Float = 40f
+    ) {
+        botonCentral.apply {
+            this.colorFondo = colorFondo
+            this.colorBorde = colorBorde
+            this.colorTexto = colorTexto
+            this.tamañoTexto = tamañoTexto
+            invalidate()
+        }
+    }
 }
