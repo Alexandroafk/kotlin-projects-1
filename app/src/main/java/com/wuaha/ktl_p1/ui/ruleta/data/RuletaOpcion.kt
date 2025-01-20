@@ -6,8 +6,8 @@ data class RuletaOpcion(
     val texto: String,
     val colorFondo: Int,
     var probabilidad: Float? = null,
-    val colorTexto: Int = Color.BLACK,
-    val tamañoTexto: Float = 40f
+    val tamañoTexto: Float = 60f,
+    val colorTexto: Int = Color.BLACK
 ) {
     companion object {
         fun validarProbabilidades(opciones: List<RuletaOpcion>): Boolean {

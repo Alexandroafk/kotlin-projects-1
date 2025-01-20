@@ -34,12 +34,12 @@ class RuletaActivity : AppCompatActivity() {
             setVelocidadAnimacion(8)
             setDuracionAnimacion(5000)
 
-            // Opcional: callback para manejar la selección
-            girar { opcionSeleccionada ->
-                Toast.makeText(this@RuletaActivity,
-                    "¡${opcionSeleccionada.texto} seleccionada!",
-                    Toast.LENGTH_SHORT).show()
-            }
+//            // Opcional: callback para manejar la selección
+//            girar { opcionSeleccionada ->
+//                Toast.makeText(this@RuletaActivity,
+//                    "¡${opcionSeleccionada.texto} seleccionada!",
+//                    Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 }

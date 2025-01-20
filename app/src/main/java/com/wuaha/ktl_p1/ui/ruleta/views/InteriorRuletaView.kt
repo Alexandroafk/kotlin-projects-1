@@ -142,9 +142,15 @@ class InteriorRuletaView @JvmOverloads constructor(
                 color = opcion.colorTexto
                 textSize = opcion.tamañoTexto
             }
-
+            val anguloTextoAdicional = 15f
             canvas.rotate(90f + anguloInicio + anguloSegmento / 2, x, y)
+
+            // Alinear el texto a gusto (-90f)
+            canvas.save()
+            canvas.rotate(-90f, x + 20, y)
             canvas.drawText(opcion.texto, x, y, textPaint)
+            canvas.restore()
+
             canvas.rotate(-(90f + anguloInicio + anguloSegmento / 2), x, y)
 
             anguloInicio += anguloSegmento

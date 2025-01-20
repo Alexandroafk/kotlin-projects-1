@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
+import android.widget.Toast
 import com.wuaha.ktl_p1.ui.ruleta.data.RuletaOpcion
 
 class RuletaView @JvmOverloads constructor(
@@ -15,12 +16,21 @@ class RuletaView @JvmOverloads constructor(
     private val ruletaInterior = InteriorRuletaView(context)
     private val botonCentral = CentroRuletaView(context)
 
+    private var isGiroActivo = false
+
     init {
         addView(ruletaInterior)
         addView(botonCentral)
 
         botonCentral.onClick = {
-            ruletaInterior.girar()
+            if (!isGiroActivo) {
+                isGiroActivo = true // Activa la bandera
+                ruletaInterior.girar {
+                    isGiroActivo = false // Desactiva la bandera una vez terminado el giro
+                }
+            } else {
+                Toast.makeText(context, "Espere el resultado.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         ruletaInterior.layoutParams = LayoutParams(
