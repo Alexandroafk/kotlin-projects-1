@@ -61,16 +61,11 @@ class InteriorRuletaView @JvmOverloads constructor(
         enableRandomOptions = enable
     }
 
-//    fun setAnguloSeleccionado(angulo: Float) {
-//        anguloSeleccionado = angulo.coerceIn(0f, 360f)
-//        invalidate()
-//    }
-
     fun setVelocidadAnimacion(velocidad: Int) {
         velocidadAnimacion = velocidad.coerceIn(1, 10)
     }
 
-    fun setDuracionAnimacion(duracionMs: Long) {
+    fun setMinDuracionAnimacion(duracionMs: Long) {
         duracionAnimacion = duracionMs.coerceIn(1000, 30000)
     }
 

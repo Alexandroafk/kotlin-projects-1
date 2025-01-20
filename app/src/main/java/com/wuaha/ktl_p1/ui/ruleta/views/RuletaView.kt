@@ -50,9 +50,8 @@ class RuletaView @JvmOverloads constructor(
     }
 
     fun setOpciones(nuevasOpciones: List<RuletaOpcion>) = ruletaInterior.setOpciones(nuevasOpciones)
-    // fun setAnguloSeleccionado(angulo: Float) = ruletaInterior.setAnguloSeleccionado(angulo)
     fun setVelocidadAnimacion(velocidad: Int) = ruletaInterior.setVelocidadAnimacion(velocidad)
-    fun setDuracionAnimacion(duracionMs: Long) = ruletaInterior.setDuracionAnimacion(duracionMs)
+    fun setMinDuracionAnimacion(duracionMs: Long) = ruletaInterior.setMinDuracionAnimacion(duracionMs)
     fun girar(callback: ((RuletaOpcion) -> Unit)? = null) = ruletaInterior.girar(callback)
 
     fun setBotonTexto(texto: String) {
