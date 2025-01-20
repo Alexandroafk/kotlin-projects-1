@@ -19,7 +19,7 @@ class CentroRuletaView @JvmOverloads constructor(
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     var texto: String = "Girar"
-    var radioBoton: Float = 70f
+    var radioBoton: Float = 60f
     var tamañoTexto: Float = 40f
     var colorTexto: Int = Color.BLACK
     var colorFondo: Int = Color.parseColor("#b2f3bb")

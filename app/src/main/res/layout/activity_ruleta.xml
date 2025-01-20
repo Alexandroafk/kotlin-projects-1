@@ -7,22 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.ruleta.RuletaActivity">
 
-
     <com.wuaha.ktl_p1.ui.ruleta.views.RuletaView
         android:id="@+id/ruleta_view_xml"
-        android:layout_width="334dp"
-        android:layout_height="328dp"
+        android:layout_width="351dp"
+        android:layout_height="358dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498" />
 
     <ImageView
         android:id="@+id/marco_ruleta"
-        android:layout_width="332dp"
-        android:layout_height="365dp"
+        android:layout_width="351dp"
+        android:layout_height="372dp"
         android:src="@drawable/marco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

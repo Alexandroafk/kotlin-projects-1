@@ -23,7 +23,7 @@ class InteriorRuletaView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private var opciones: List<RuletaOpcion> = listOf()
-    private var anguloSeleccionado: Float = 0f
+    // private var anguloSeleccionado: Float = 0f
     private var velocidadAnimacion: Int = 5
     private var duracionAnimacion: Long = 5000
     private var currentRotation = 0f
@@ -56,10 +56,10 @@ class InteriorRuletaView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setAnguloSeleccionado(angulo: Float) {
-        anguloSeleccionado = angulo.coerceIn(0f, 360f)
-        invalidate()
-    }
+//    fun setAnguloSeleccionado(angulo: Float) {
+//        anguloSeleccionado = angulo.coerceIn(0f, 360f)
+//        invalidate()
+//    }
 
     fun setVelocidadAnimacion(velocidad: Int) {
         velocidadAnimacion = velocidad.coerceIn(1, 10)
@@ -116,7 +116,7 @@ class InteriorRuletaView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val centro = width.coerceAtMost(height) / 2f
-        val radio = centro * 0.8f
+        val radio = centro * 0.95f
         var anguloInicio = 0f
 
         opciones.forEach { opcion ->

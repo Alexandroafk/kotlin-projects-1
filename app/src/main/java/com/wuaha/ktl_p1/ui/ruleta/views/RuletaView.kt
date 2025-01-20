@@ -23,6 +23,13 @@ class RuletaView @JvmOverloads constructor(
             ruletaInterior.girar()
         }
 
+        ruletaInterior.layoutParams = LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.MATCH_PARENT
+        ).apply {
+            gravity = Gravity.CENTER
+        }
+
         // Centrar el botón
         botonCentral.layoutParams = LayoutParams(
             LayoutParams.WRAP_CONTENT,
@@ -33,7 +40,7 @@ class RuletaView @JvmOverloads constructor(
     }
 
     fun setOpciones(nuevasOpciones: List<RuletaOpcion>) = ruletaInterior.setOpciones(nuevasOpciones)
-    fun setAnguloSeleccionado(angulo: Float) = ruletaInterior.setAnguloSeleccionado(angulo)
+    // fun setAnguloSeleccionado(angulo: Float) = ruletaInterior.setAnguloSeleccionado(angulo)
     fun setVelocidadAnimacion(velocidad: Int) = ruletaInterior.setVelocidadAnimacion(velocidad)
     fun setDuracionAnimacion(duracionMs: Long) = ruletaInterior.setDuracionAnimacion(duracionMs)
     fun girar(callback: ((RuletaOpcion) -> Unit)? = null) = ruletaInterior.girar(callback)
