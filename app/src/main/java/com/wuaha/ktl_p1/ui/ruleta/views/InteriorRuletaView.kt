@@ -23,7 +23,7 @@ class InteriorRuletaView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private var opciones: List<RuletaOpcion> = listOf()
-    private var enableRandomOptions: Boolean = true
+    private var enableRandomOptions: Boolean = false // TODO Da error
     // private var anguloSeleccionado: Float = 0f
     private var velocidadAnimacion: Int = 5
     private var duracionAnimacion: Long = 5000
