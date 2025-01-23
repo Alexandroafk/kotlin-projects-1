@@ -17,6 +17,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498" />
 
+    <com.wuaha.ktl_p1.ui.ruleta.views.CentroRuletaView
+        android:id="@+id/centro_ruleta_view_xml"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="@id/ruleta_view_xml"
+        app:layout_constraintEnd_toEndOf="@id/ruleta_view_xml"
+        app:layout_constraintStart_toStartOf="@id/ruleta_view_xml"
+        app:layout_constraintTop_toTopOf="@id/ruleta_view_xml"/>
+
     <ImageView
         android:id="@+id/marco_ruleta"
         android:layout_width="351dp"

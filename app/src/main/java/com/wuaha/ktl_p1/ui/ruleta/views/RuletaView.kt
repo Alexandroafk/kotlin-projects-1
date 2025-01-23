@@ -1,81 +1,153 @@
 package com.wuaha.ktl_p1.ui.ruleta.views
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.util.AttributeSet
-import android.view.Gravity
-import android.widget.FrameLayout
-import android.widget.Toast
+import android.view.View
+import android.view.animation.DecelerateInterpolator
 import com.wuaha.ktl_p1.ui.ruleta.data.RuletaOpcion
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.random.Random
 
 class RuletaView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-    private val ruletaInterior = InteriorRuletaView(context)
-    private val botonCentral = CentroRuletaView(context)
+) : View(context, attrs, defStyleAttr) {
 
-    private var isGiroActivo = false
+    private var opciones: List<RuletaOpcion> = listOf()
+    private var enableRandomOptions: Boolean = false
+    private var velocidadAnimacion: Int = 5
+    private var duracionAnimacion: Long = 5000
+    private var currentRotation = 0f
+    private var rotationAnimator: ValueAnimator? = null
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.WHITE
+        textAlign = Paint.Align.CENTER
+    }
+
+    var isGiroActivo: Boolean = false
+        private set
 
     init {
-        addView(ruletaInterior)
-        addView(botonCentral)
+        textPaint.textSize = 40f
+    }
 
-        botonCentral.onClick = {
-            if (!isGiroActivo) {
-                isGiroActivo = true // Activa la bandera
-                ruletaInterior.girar {
-                    isGiroActivo = false // Desactiva la bandera una vez terminado el giro
-                }
-            } else {
-                Toast.makeText(context, "Espere el resultado.", Toast.LENGTH_SHORT).show()
+    fun setOpciones(nuevasOpciones: List<RuletaOpcion>) {
+        if (nuevasOpciones.size < 2) {
+            opciones = listOf(
+                nuevasOpciones.firstOrNull() ?: RuletaOpcion("Vacío", Color.GRAY),
+                RuletaOpcion("Vacío", Color.DKGRAY)
+            )
+        } else {
+            opciones = nuevasOpciones
+        }
+        if (!RuletaOpcion.validarProbabilidades(opciones)) {
+            return
+        }
+        invalidate()
+    }
+
+    fun setVelocidadAnimacion(velocidad: Int) {
+        velocidadAnimacion = velocidad.coerceIn(1, 10)
+    }
+
+    fun setMinDuracionAnimacion(duracionMs: Long) {
+        duracionAnimacion = duracionMs.coerceIn(1000, 30000)
+    }
+
+    fun girar(callback: ((RuletaOpcion) -> Unit)? = null) {
+        if (isGiroActivo) return
+        isGiroActivo = true
+
+        rotationAnimator?.cancel()
+
+        val rotacionesBase = 360f * velocidadAnimacion
+        val rotacionesExtra = Random.nextFloat() * 360f * 2
+        val anguloFinal = currentRotation + rotacionesBase + rotacionesExtra
+
+        val duracionAleatoria = duracionAnimacion + Random.nextLong(-1000, 1000)
+
+        rotationAnimator = ValueAnimator.ofFloat(currentRotation, anguloFinal).apply {
+            duration = duracionAleatoria.coerceIn(1000, 30000)
+            interpolator = DecelerateInterpolator()
+            addUpdateListener {
+                rotation = it.animatedValue as Float
+                currentRotation = rotation
+                invalidate()
             }
-        }
-
-        ruletaInterior.layoutParams = LayoutParams(
-            LayoutParams.MATCH_PARENT,
-            LayoutParams.MATCH_PARENT
-        ).apply {
-            gravity = Gravity.CENTER
-        }
-
-        // Centrar el botón
-        botonCentral.layoutParams = LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-        ).apply {
-            gravity = Gravity.CENTER
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    isGiroActivo = false
+                    val opcionSeleccionada = obtenerOpcionSeleccionada()
+                    callback?.invoke(opcionSeleccionada)
+                }
+            })
+            start()
         }
     }
 
-    fun setOpciones(nuevasOpciones: List<RuletaOpcion>) = ruletaInterior.setOpciones(nuevasOpciones)
-    fun setVelocidadAnimacion(velocidad: Int) = ruletaInterior.setVelocidadAnimacion(velocidad)
-    fun setMinDuracionAnimacion(duracionMs: Long) = ruletaInterior.setMinDuracionAnimacion(duracionMs)
-    fun girar(callback: ((RuletaOpcion) -> Unit)? = null) = ruletaInterior.girar(callback)
+    private fun obtenerOpcionSeleccionada(): RuletaOpcion {
+        val anguloNormalizado = (360 - (rotation % 360)) % 360
+        var anguloAcumulado = 0f
 
-    fun setBotonTexto(texto: String) {
-        botonCentral.texto = texto
-        botonCentral.invalidate()
+        opciones.forEach { opcion ->
+            val anguloSegmento = (opcion.probabilidad ?: 0f) * 360f / 100f
+            if (anguloNormalizado >= anguloAcumulado &&
+                anguloNormalizado < anguloAcumulado + anguloSegmento) {
+                return opcion
+            }
+            anguloAcumulado += anguloSegmento
+        }
+        return opciones.first()
     }
 
-    fun setBotonRadio(radio: Float) {
-        botonCentral.radioBoton = radio
-        botonCentral.invalidate()
-    }
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        val centro = width.coerceAtMost(height) / 2f
+        val radio = centro * 0.95f
+        var anguloInicio = 0f
 
-    fun setBotonEstilo(
-        colorFondo: Int = Color.parseColor("#b2f3bb"),
-        colorBorde: Int = Color.BLACK,
-        colorTexto: Int = Color.BLACK,
-        tamañoTexto: Float = 40f
-    ) {
-        botonCentral.apply {
-            this.colorFondo = colorFondo
-            this.colorBorde = colorBorde
-            this.colorTexto = colorTexto
-            this.tamañoTexto = tamañoTexto
-            invalidate()
+        val opcionesDibujar = if (enableRandomOptions) opciones.shuffled() else opciones
+
+        opcionesDibujar.forEach { opcion ->
+            val anguloSegmento = (opcion.probabilidad ?: 0f) * 360f / 100f
+
+            paint.color = opcion.colorFondo
+            canvas.drawArc(
+                centro - radio,
+                centro - radio,
+                centro + radio,
+                centro + radio,
+                anguloInicio,
+                anguloSegmento,
+                true,
+                paint
+            )
+
+            val anguloTexto = Math.toRadians(anguloInicio + anguloSegmento / 2.0)
+            val x = (centro + radio * 0.6 * cos(anguloTexto)).toFloat()
+            val y = (centro + radio * 0.6 * sin(anguloTexto)).toFloat()
+
+            textPaint.apply {
+                color = opcion.colorTexto
+                textSize = opcion.tamañoTexto
+            }
+            canvas.rotate(90f + anguloInicio + anguloSegmento / 2, x, y)
+            canvas.save()
+            canvas.rotate(-90f, x + 20, y)
+            canvas.drawText(opcion.texto, x, y, textPaint)
+            canvas.restore()
+            canvas.rotate(-(90f + anguloInicio + anguloSegmento / 2), x, y)
+
+            anguloInicio += anguloSegmento
         }
     }
 }
