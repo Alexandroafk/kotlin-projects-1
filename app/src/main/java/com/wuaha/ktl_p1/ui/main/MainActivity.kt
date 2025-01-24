@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.wuaha.ktl_p1.R
 import com.wuaha.ktl_p1.ui.ruleta.RuletaActivity
 import com.wuaha.ktl_p1.ui.timer.TimerActivity

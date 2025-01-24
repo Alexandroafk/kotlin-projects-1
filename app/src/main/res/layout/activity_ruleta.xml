@@ -11,11 +11,19 @@
         android:id="@+id/ruleta_view_xml"
         android:layout_width="351dp"
         android:layout_height="358dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ruleta_history_options_view_xml"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498" />
+
+    <com.wuaha.ktl_p1.ui.ruleta.views.HistoryOptionsView
+        android:id="@+id/ruleta_history_options_view_xml"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/marco_ruleta"
@@ -38,6 +46,15 @@
         app:layout_constraintEnd_toEndOf="@+id/ruleta_view_xml"
         app:layout_constraintTop_toTopOf="@+id/ruleta_view_xml" />
 
+    <ImageView
+        android:id="@+id/ruleta_settings_ic_img_xml"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Icono de engranaje" />
+
     <com.wuaha.ktl_p1.ui.ruleta.views.CentroRuletaView
         android:id="@+id/centro_ruleta_view_xml"
         android:layout_width="100dp"
@@ -47,23 +64,4 @@
         app:layout_constraintStart_toStartOf="@id/ruleta_view_xml"
         app:layout_constraintTop_toTopOf="@id/ruleta_view_xml"/>
 
-
-    <!-- Prueba de botones
-    <ScrollView
-        android:id="@+id/scroll_controles"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/ruleta_view_xml"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <androidx.gridlayout.widget.GridLayout
-            android:id="@+id/panel_control"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:columnCount="2"
-            app:rowCount="4">
-        </androidx.gridlayout.widget.GridLayout>
-    </ScrollView> -->
 </androidx.constraintlayout.widget.ConstraintLayout>

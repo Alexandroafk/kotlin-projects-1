@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Nombre de la opción -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_option_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de la opción"
+            android:inputType="textCapWords"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Selector de color -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btn_select_color"
+            android:layout_width="160dp"
+            android:layout_height="48dp"
+            android:textSize="14sp"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:background="@drawable/color_preview_background"
+            android:textColor="@android:color/black"
+            app:icon="@drawable/ic_palette"
+            app:iconTint="@android:color/black"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            tools:text="#FFA500"/>
+
+        <TextView
+            android:id="@+id/tv_selected_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textSize="14sp"
+            tools:text="#FF0000"/>
+
+    </LinearLayout>
+
+    <!-- Campo oculto para valor HEX -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_option_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Color (HEX)"
+            android:inputType="textCapCharacters"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Probabilidad -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_option_probabilidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Probabilidad (%)"
+            android:inputType="numberDecimal"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
