@@ -28,11 +28,11 @@
         app:layout_constraintTop_toBottomOf="@+id/go_ruleta_button" />
 
     <Button
-        android:id="@+id/buttonActivity3"
+        android:id="@+id/locationTv"
         android:layout_width="278dp"
         android:layout_height="38dp"
         android:layout_marginTop="8dp"
-        android:text="Ir a ***"
+        android:text="Ir a mi ubicacion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/go_timer_button" />
@@ -45,6 +45,6 @@
         android:text="Ir a ***"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonActivity3" />
+        app:layout_constraintTop_toBottomOf="@+id/locationTv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
