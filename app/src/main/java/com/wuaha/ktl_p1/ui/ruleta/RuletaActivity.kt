@@ -22,11 +22,11 @@ class RuletaActivity : AppCompatActivity() {
         centroRuletaView = findViewById(R.id.centro_ruleta_view_xml)
 
         val opciones = listOf(
-            RuletaOpcion("Opción 1", Color.RED, 3f, 40f, Color.BLACK),
-            RuletaOpcion("Opción 2", Color.BLUE,20f, 40f),
-            RuletaOpcion("Opción 3", Color.GREEN,40f, 40f),
-            RuletaOpcion("Opción 4", Color.YELLOW,0f, 40f), // Si se pasa 0f como probabilidad, se
-            RuletaOpcion("Opción 5", Color.MAGENTA, )                             // asigna una probabilidad automatica.
+            RuletaOpcion("Opción A", Color.RED, 3f, 40f, Color.BLACK),
+            RuletaOpcion("Opción B", Color.BLUE,20f, 40f),
+            RuletaOpcion("Opción C", Color.GREEN,40f, 40f),
+            RuletaOpcion("Opción D", Color.YELLOW,0f, 40f), // Si se pasa 0f como probabilidad, se
+            RuletaOpcion("Opción E", Color.MAGENTA, )                             // asigna una probabilidad automatica.
         )
 
         ruletaView.apply {
