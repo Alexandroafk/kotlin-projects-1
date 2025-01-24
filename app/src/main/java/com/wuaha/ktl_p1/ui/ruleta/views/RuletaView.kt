@@ -22,7 +22,9 @@ class RuletaView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private var opciones: List<RuletaOpcion> = listOf()
-    private var enableRandomOptions: Boolean = false
+    private var opcionesOrdenadas: List<RuletaOpcion> = emptyList()
+    private var enableRandomOptions: Boolean = true
+    private var selectedRuletaAngulo: Float = 0f
     private var velocidadAnimacion: Int = 5
     private var duracionAnimacion: Long = 5000
     private var currentRotation = 0f
@@ -52,11 +54,21 @@ class RuletaView @JvmOverloads constructor(
         if (!RuletaOpcion.validarProbabilidades(opciones)) {
             return
         }
+        actualizarOrdenOpciones()
+    }
+
+    fun setEnableRandomOptions(enable: Boolean) {
+        enableRandomOptions = enable
+        actualizarOrdenOpciones()
+    }
+
+    private fun actualizarOrdenOpciones() {
+        opcionesOrdenadas = if (enableRandomOptions) opciones.shuffled() else opciones
         invalidate()
     }
 
     fun setVelocidadAnimacion(velocidad: Int) {
-        velocidadAnimacion = velocidad.coerceIn(1, 10)
+        velocidadAnimacion = velocidad.coerceIn(1, 50)
     }
 
     fun setMinDuracionAnimacion(duracionMs: Long) {
@@ -98,15 +110,14 @@ class RuletaView @JvmOverloads constructor(
         val anguloNormalizado = (360 - (rotation % 360)) % 360
         var anguloAcumulado = 0f
 
-        opciones.forEach { opcion ->
+        opcionesOrdenadas.forEach { opcion ->
             val anguloSegmento = (opcion.probabilidad ?: 0f) * 360f / 100f
-            if (anguloNormalizado >= anguloAcumulado &&
-                anguloNormalizado < anguloAcumulado + anguloSegmento) {
+            if (anguloNormalizado >= anguloAcumulado && anguloNormalizado < anguloAcumulado + anguloSegmento) {
                 return opcion
             }
             anguloAcumulado += anguloSegmento
         }
-        return opciones.first()
+        return opcionesOrdenadas.first()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -115,9 +126,7 @@ class RuletaView @JvmOverloads constructor(
         val radio = centro * 0.95f
         var anguloInicio = 0f
 
-        val opcionesDibujar = if (enableRandomOptions) opciones.shuffled() else opciones
-
-        opcionesDibujar.forEach { opcion ->
+        opcionesOrdenadas.forEach { opcion ->
             val anguloSegmento = (opcion.probabilidad ?: 0f) * 360f / 100f
 
             paint.color = opcion.colorFondo

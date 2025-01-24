@@ -31,7 +31,9 @@ class RuletaActivity : AppCompatActivity() {
 
         ruletaView.apply {
             setOpciones(opciones)
-            setMinDuracionAnimacion(4000)
+            setVelocidadAnimacion(5)
+            setMinDuracionAnimacion(3000)
+            // setEnableRandomOptions(true) // Por defecto es True
         }
 
         centroRuletaView.onClick = {
