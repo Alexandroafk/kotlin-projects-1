@@ -26,7 +26,8 @@ class RuletaActivity : AppCompatActivity() {
             RuletaOpcion("Opción 2", Color.BLUE,20f, 40f),
             RuletaOpcion("Opción 3", Color.GREEN,40f, 40f),
             RuletaOpcion("Opción 4", Color.YELLOW,0f, 40f), // Si se pasa 0f como probabilidad, se
-            RuletaOpcion("Opción 5", Color.MAGENTA, )                             // asigna una probabilidad automatica.
+            RuletaOpcion("Opción 5", Color.MAGENTA, )                             // asigna una probabilidad automatica.,
+            RuletaOpcion("Opción 6", Color.GREEN,40f, 40f),
         )
 
         ruletaView.apply {
