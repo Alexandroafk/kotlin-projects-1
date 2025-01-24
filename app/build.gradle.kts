@@ -37,10 +37,12 @@ android {
 
 dependencies {
     implementation("com.airbnb.android:lottie:6.0.0")
-
+    implementation ("com.afollestad.material-dialogs:color:3.3.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.gridlayout)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
