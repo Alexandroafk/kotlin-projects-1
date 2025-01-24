@@ -1,15 +1,16 @@
 package com.wuaha.ktl_p1.ui.main
 
 import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.wuaha.ktl_p1.R
 import com.wuaha.ktl_p1.ui.ruleta.RuletaActivity
 import com.wuaha.ktl_p1.ui.timer.TimerActivity
@@ -24,8 +25,11 @@ class MainActivity : AppCompatActivity() {
 
         val buttonActivity1 = findViewById<Button>(R.id.go_ruleta_button)
         val buttonActivity2 = findViewById<Button>(R.id.go_timer_button)
-        val buttonActivity3 = findViewById<Button>(R.id.buttonActivity3)
+        val buttonActivity3 = findViewById<Button>(R.id.locationTv)
         val buttonActivity4 = findViewById<Button>(R.id.buttonActivity4)
+
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         buttonActivity1.setOnClickListener {
             val intent = Intent(this, RuletaActivity::class.java)
@@ -40,11 +44,6 @@ class MainActivity : AppCompatActivity() {
         buttonActivity3.setOnClickListener {
             openGoogleMaps()
         }
-
-//        buttonActivity4.setOnClickListener {
-//            val intent = Intent(this, Activity4::class.java)
-//            startActivity(intent)
-//        }
     }
 
     private fun openGoogleMaps() {
