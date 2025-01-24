@@ -37,10 +37,12 @@ android {
 
 dependencies {
     implementation("com.airbnb.android:lottie:6.0.0")
+    implementation("com.flask.colorpicker:colorpicker:0.0.13")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.gridlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

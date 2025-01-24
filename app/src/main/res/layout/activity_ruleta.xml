@@ -17,24 +17,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498" />
 
-    <com.wuaha.ktl_p1.ui.ruleta.views.CentroRuletaView
-        android:id="@+id/centro_ruleta_view_xml"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="@id/ruleta_view_xml"
-        app:layout_constraintEnd_toEndOf="@id/ruleta_view_xml"
-        app:layout_constraintStart_toStartOf="@id/ruleta_view_xml"
-        app:layout_constraintTop_toTopOf="@id/ruleta_view_xml"/>
-
     <ImageView
         android:id="@+id/marco_ruleta"
         android:layout_width="351dp"
-        android:layout_height="372dp"
+        android:layout_height="358dp"
         android:src="@drawable/marco"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/ruleta_view_xml"
+        app:layout_constraintEnd_toEndOf="@id/ruleta_view_xml"
+        app:layout_constraintStart_toStartOf="@id/ruleta_view_xml"
+        app:layout_constraintTop_toTopOf="@id/ruleta_view_xml"
         app:layout_constraintVertical_bias="0.498" />
 
     <ImageView
@@ -47,5 +38,32 @@
         app:layout_constraintEnd_toEndOf="@+id/ruleta_view_xml"
         app:layout_constraintTop_toTopOf="@+id/ruleta_view_xml" />
 
+    <com.wuaha.ktl_p1.ui.ruleta.views.CentroRuletaView
+        android:id="@+id/centro_ruleta_view_xml"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="@id/ruleta_view_xml"
+        app:layout_constraintEnd_toEndOf="@id/ruleta_view_xml"
+        app:layout_constraintStart_toStartOf="@id/ruleta_view_xml"
+        app:layout_constraintTop_toTopOf="@id/ruleta_view_xml"/>
 
+
+    <!-- Prueba de botones
+    <ScrollView
+        android:id="@+id/scroll_controles"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/ruleta_view_xml"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/panel_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:columnCount="2"
+            app:rowCount="4">
+        </androidx.gridlayout.widget.GridLayout>
+    </ScrollView> -->
 </androidx.constraintlayout.widget.ConstraintLayout>

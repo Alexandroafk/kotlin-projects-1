@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import android.widget.Toast
 import com.wuaha.ktl_p1.ui.ruleta.data.RuletaOpcion
 import kotlin.math.cos
 import kotlin.math.sin
@@ -21,39 +22,58 @@ class RuletaView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
+    // Propiedades de la ruleta
     private var opciones: List<RuletaOpcion> = listOf()
     private var opcionesOrdenadas: List<RuletaOpcion> = emptyList()
+    private var opcionesConDefault: List<RuletaOpcion> = emptyList()
+    private var porcentajeSobrante: Float = 0f
     private var enableRandomOptions: Boolean = true
     private var selectedRuletaAngulo: Float = 0f
     private var velocidadAnimacion: Int = 5
     private var duracionAnimacion: Long = 5000
     private var currentRotation = 0f
     private var rotationAnimator: ValueAnimator? = null
+
+    // Estado de la ruleta
+    var isGiroActivo: Boolean = false
+        private set
+
+    // Herramientas de dibujo
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
         textAlign = Paint.Align.CENTER
     }
 
-    var isGiroActivo: Boolean = false
-        private set
-
     init {
         textPaint.textSize = 40f
     }
 
+    // --------------------------
+    // Configuración de la ruleta
+    // --------------------------
+
     fun setOpciones(nuevasOpciones: List<RuletaOpcion>) {
-        if (nuevasOpciones.size < 2) {
-            opciones = listOf(
-                nuevasOpciones.firstOrNull() ?: RuletaOpcion("Vacío", Color.GRAY),
-                RuletaOpcion("Vacío", Color.DKGRAY)
-            )
-        } else {
-            opciones = nuevasOpciones
-        }
-        if (!RuletaOpcion.validarProbabilidades(opciones)) {
+        val opcionesLimpias = nuevasOpciones.filterNot { it.texto == "Vacío" }
+
+        if (!RuletaOpcion.validarProbabilidades(opcionesLimpias)) {
+            Toast.makeText(context, "Error: Probabilidades inválidas", Toast.LENGTH_SHORT).show()
             return
         }
+
+        val sumaProbabilidades = opcionesLimpias.fold(0f) { acc, opcion ->
+            acc + (opcion.probabilidad ?: 0f)
+        }
+
+        porcentajeSobrante = 100f - sumaProbabilidades
+
+        opcionesConDefault = opcionesLimpias.toMutableList().apply {
+            if (porcentajeSobrante > 0) {
+                add(RuletaOpcion.getDefaultOption(porcentajeSobrante))
+            }
+        }
+
+        opciones = opcionesConDefault
         actualizarOrdenOpciones()
     }
 
@@ -62,8 +82,10 @@ class RuletaView @JvmOverloads constructor(
         actualizarOrdenOpciones()
     }
 
+    fun isRandomOptionsEnabled(): Boolean = enableRandomOptions
+
     private fun actualizarOrdenOpciones() {
-        opcionesOrdenadas = if (enableRandomOptions) opciones.shuffled() else opciones
+        opcionesOrdenadas = if (enableRandomOptions) opcionesConDefault.shuffled() else opcionesConDefault
         invalidate()
     }
 
@@ -71,9 +93,15 @@ class RuletaView @JvmOverloads constructor(
         velocidadAnimacion = velocidad.coerceIn(1, 50)
     }
 
+    fun getVelocidadAnimacion(): Int = velocidadAnimacion
+
     fun setMinDuracionAnimacion(duracionMs: Long) {
         duracionAnimacion = duracionMs.coerceIn(1000, 30000)
     }
+
+    // --------------------------
+    // Lógica de giro de la ruleta
+    // --------------------------
 
     fun girar(callback: ((RuletaOpcion) -> Unit)? = null) {
         if (isGiroActivo) return
@@ -117,8 +145,13 @@ class RuletaView @JvmOverloads constructor(
             }
             anguloAcumulado += anguloSegmento
         }
-        return opcionesOrdenadas.first()
+
+        return opcionesOrdenadas.firstOrNull() ?: RuletaOpcion("Error", "#FF0000", 100f)
     }
+
+    // --------------------------
+    // Dibujo de la ruleta
+    // --------------------------
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -129,7 +162,8 @@ class RuletaView @JvmOverloads constructor(
         opcionesOrdenadas.forEach { opcion ->
             val anguloSegmento = (opcion.probabilidad ?: 0f) * 360f / 100f
 
-            paint.color = opcion.colorFondo
+            // Dibujar el segmento de la ruleta
+            paint.color = opcion.colorFondoInt
             canvas.drawArc(
                 centro - radio,
                 centro - radio,
@@ -141,18 +175,19 @@ class RuletaView @JvmOverloads constructor(
                 paint
             )
 
+            // Dibujar el texto en el segmento
             val anguloTexto = Math.toRadians(anguloInicio + anguloSegmento / 2.0)
             val x = (centro + radio * 0.6 * cos(anguloTexto)).toFloat()
             val y = (centro + radio * 0.6 * sin(anguloTexto)).toFloat()
 
             textPaint.apply {
-                color = opcion.colorTexto
+                color = opcion.colorTextoInt
                 textSize = opcion.tamañoTexto
             }
             canvas.rotate(90f + anguloInicio + anguloSegmento / 2, x, y)
             canvas.save()
             canvas.rotate(-90f, x + 20, y)
-            canvas.drawText(opcion.texto, x, y, textPaint)
+            canvas.drawText("${opcion.texto} (${opcion.probabilidad}%)", x, y, textPaint)
             canvas.restore()
             canvas.rotate(-(90f + anguloInicio + anguloSegmento / 2), x, y)
 
