@@ -85,8 +85,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Probabilidad (%)"
-            android:inputType="numberDecimal"
-            android:maxLines="1"/>
+            android:inputType="number|numberDecimal"
+            android:digits="0123456789."
+            android:maxLength="5"/>
+
+        <TextView
+            android:id="@+id/tv_porcentaje_sobrante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:padding="8dp"
+            tools:text="Porcentaje sobrante: "/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

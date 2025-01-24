@@ -93,10 +93,14 @@ class RuletaView @JvmOverloads constructor(
         velocidadAnimacion = velocidad.coerceIn(1, 50)
     }
 
-    fun getVelocidadAnimacion(): Int = velocidadAnimacion
-
     fun setMinDuracionAnimacion(duracionMs: Long) {
         duracionAnimacion = duracionMs.coerceIn(1000, 30000)
+    }
+
+    fun getVelocidadAnimacion(): Int = velocidadAnimacion
+
+    fun getPorcentajeSobrante(): Float {
+        return porcentajeSobrante
     }
 
     // --------------------------
