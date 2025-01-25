@@ -7,15 +7,19 @@ data class RuletaOpcion(
     var texto: String = "Vacio",
     var colorFondo: String = "#808080", // Gris por defecto (hex)
     var probabilidad: Float? = null,
-    var tamañoTexto: Float = 40f,
+    var tamañoTexto: Float = 30f,
     var colorTexto: String = "#000000", // Negro por defecto (hex)
     var habilitada: Boolean = true
 ) {
-    @ColorInt val colorFondoInt: Int = parseColorHex(colorFondo, Color.GRAY)
-    @ColorInt val colorTextoInt: Int = parseColorHex(colorTexto, Color.BLACK)
+    @get:ColorInt
+    val colorFondoInt: Int
+        get() = parseColorHex(colorFondo, Color.GRAY)
+    @get:ColorInt
+    val colorTextoInt: Int
+        get() = parseColorHex(colorTexto, Color.BLACK)
 
     init {
-        if (tamañoTexto == 0f) tamañoTexto = 40f
+        if (tamañoTexto == 0f) tamañoTexto = 30f
     }
 
     private fun parseColorHex(hex: String, default: Int): Int {
@@ -57,7 +61,7 @@ data class RuletaOpcion(
                 texto = "Vacío",
                 colorFondo = "#989e98",
                 probabilidad = probabilidadSobrante,
-                tamañoTexto = 40f,
+                tamañoTexto = 30f,
                 colorTexto = "#000000"
             )
         }

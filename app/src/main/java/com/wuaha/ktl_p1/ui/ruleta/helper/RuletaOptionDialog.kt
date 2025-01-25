@@ -21,28 +21,31 @@ import com.wuaha.ktl_p1.R
 import com.wuaha.ktl_p1.ui.ruleta.data.RuletaOpcion
 import com.wuaha.ktl_p1.ui.ruleta.views.RuletaView
 
-class EditOptionDialog(
+class RuletaOptionDialog(
     private val context: Context,
-    private val currentOptionIndex: Int,
+    private val currentOption: RuletaOpcion,
     private val allOptions: MutableList<RuletaOpcion>,
     private val ruletaView: RuletaView,
     private val title: String,
-    private val onUpdate: () -> Unit
+    private val isCreateMode: Boolean,
+    private val onUpdate: () -> Unit,
+    private val isAutoContrastTextColorEnabled: Boolean = true
 ) {
     private lateinit var nombreInput: EditText
     private lateinit var colorInput: EditText
     private lateinit var probabilidadInput: EditText
     private lateinit var btnColor: Button
+    private var contrasteOpcionColorTexto: String = currentOption.colorTexto
     private lateinit var tvSobrante: TextView
 
-    private lateinit var currentOption: RuletaOpcion
+    //private lateinit var currentOption: RuletaOpcion
     private lateinit var otrasOpciones: List<RuletaOpcion>
     private var sumaOtras: Double = 0.0
     private var maxPermitido: Float = 0f
     private var porcentajeSobrante: Float = 0f
 
     fun show() {
-        currentOption = allOptions[currentOptionIndex]
+        // currentOption = allOptions[currentOptionIndex]
         otrasOpciones = allOptions.filter { it != currentOption && it.habilitada }
         sumaOtras = otrasOpciones.sumOf { it.probabilidad?.toDouble() ?: 0.0 }
         maxPermitido = (100.0 - sumaOtras).toFloat()
@@ -63,28 +66,45 @@ class EditOptionDialog(
             setupColorPicker()
             actualizarUI()
 
-            positiveButton(text = "Guardar") { saveChanges() }
-            negativeButton(text = "Cancelar")
+            if (!isCreateMode) {
+                neutralButton(
+                    text = if (currentOption.habilitada) "Deshabilitar" else "Habilitar"
+                ) {
+                    val originalState = currentOption.habilitada
+                    currentOption.habilitada = !originalState
+                    if (!saveChanges()) {
+                        currentOption.habilitada = originalState // Revertir si falla
+                    }
+                }
+            }
+
+            positiveButton(text = "Guardar") {
+                if (saveChanges()) {
+                    dismiss()
+                }
+            }
+            negativeButton(text = "Cancelar") {
+                if (isCreateMode) allOptions.remove(currentOption)
+                dismiss()
+            }
         }
     }
 
     private fun setupInitialValues() {
         nombreInput.setText(currentOption.texto)
         colorInput.setText(currentOption.colorFondo.ifEmpty { "#000000" })
-        probabilidadInput.setText(currentOption.probabilidad?.toString())
+        probabilidadInput.setText(currentOption.probabilidad?.toString() ?: maxPermitido.toString())
 
         try {
             val initialColor = Color.parseColor(currentOption.colorFondo)
             btnColor.apply {
                 text = currentOption.colorFondo.uppercase()
                 backgroundTintList = ColorStateList.valueOf(initialColor)
-                setTextColor(Color.BLACK)
             }
         } catch (e: Exception) {
             btnColor.apply {
                 text = "#000000"
                 backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-                setTextColor(Color.BLACK)
             }
         }
     }
@@ -145,10 +165,20 @@ class EditOptionDialog(
                         text = hexColor.uppercase()
                         backgroundTintList = ColorStateList.valueOf(color)
                     }
+                    if (isAutoContrastTextColorEnabled) {
+                        contrasteOpcionColorTexto = getContrastColor(color)
+                    }
                 }
                 positiveButton(text = "Seleccionar")
             }
         }
+    }
+
+    private fun getContrastColor(color: Int): String {
+        val luminance = 0.299 * Color.red(color) +
+                0.587 * Color.green(color) +
+                0.114 * Color.blue(color)
+        return if (luminance > 186) "#000000" else "#ffffff"
     }
 
     private fun actualizarUI(nuevoValor: Float? = null) {
@@ -176,38 +206,51 @@ class EditOptionDialog(
         tvSobrante.text = spannable
     }
 
-    private fun saveChanges() {
+    private fun saveChanges(): Boolean {
+        // 1. Validaciones iniciales
         if (probabilidadInput.error != null || porcentajeSobrante < 0) {
             Toast.makeText(context, "Ajusta la probabilidad antes de guardar", Toast.LENGTH_LONG).show()
-            return
+            return false
         }
 
+        // 2. Validaciones de color
         val colorHex = colorInput.text.toString().takeIf { it.isNotEmpty() } ?: "#000000"
         if (!colorHex.matches(Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$"))) {
             Toast.makeText(context, "Color inválido", Toast.LENGTH_LONG).show()
-            return
+            return false
         }
 
+        // 3. Validaciones de probabilidad
         val probabilidadTexto = probabilidadInput.text.toString()
         val nuevaProbabilidad = probabilidadTexto.replace(',', '.').toFloatOrNull() ?: 0f
-
         if (nuevaProbabilidad < 0f || nuevaProbabilidad > 100f) {
             Toast.makeText(context, "Probabilidad inválida", Toast.LENGTH_LONG).show()
-            return
+            return false
         }
 
-        allOptions[currentOptionIndex] = currentOption.copy(
-            texto = nombreInput.text.toString(),
-            colorFondo = colorHex,
+        // 4. Aplicar cambios
+        currentOption.apply {
+            texto = nombreInput.text.toString()
+            colorFondo = colorHex
             probabilidad = nuevaProbabilidad
-        )
-
-        if (RuletaOpcion.validarProbabilidades(allOptions.filter { it.habilitada })) {
-            ruletaView.setOpciones(allOptions.filter { it.habilitada })
-            onUpdate()
-            Toast.makeText(context, "Opción actualizada", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "Error: Suma de probabilidades excede 100%", Toast.LENGTH_LONG).show()
+            colorTexto = contrasteOpcionColorTexto
         }
+
+        if (isCreateMode) {
+            allOptions.add(currentOption)
+        }
+
+        // 5. Validación final de probabilidades
+        if (!RuletaOpcion.validarProbabilidades(allOptions.filter { it.habilitada })) {
+            if (isCreateMode) allOptions.remove(currentOption)
+            Toast.makeText(context, "Error: Suma de probabilidades excede 100%", Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        // 6. Actualizar y notificar
+        if (isCreateMode) allOptions.add(currentOption)
+        ruletaView.setOpciones(allOptions.filter { it.habilitada })
+        onUpdate()
+        return true
     }
 }

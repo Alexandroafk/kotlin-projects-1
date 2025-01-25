@@ -50,10 +50,21 @@
         android:id="@+id/ruleta_settings_ic_img_xml"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:contentDescription="Icono de engranaje"
         android:src="@drawable/ic_settings"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ruleta_view_xml"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="Icono de engranaje" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ruleta_add_option_ic_img_xml"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="Icono de Cruz"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toTopOf="@+id/ruleta_view_xml"
+        app:layout_constraintEnd_toStartOf="@+id/ruleta_settings_ic_img_xml"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.wuaha.ktl_p1.ui.ruleta.views.CentroRuletaView
         android:id="@+id/centro_ruleta_view_xml"
@@ -63,5 +74,29 @@
         app:layout_constraintEnd_toEndOf="@id/ruleta_view_xml"
         app:layout_constraintStart_toStartOf="@id/ruleta_view_xml"
         app:layout_constraintTop_toTopOf="@id/ruleta_view_xml"/>
+
+    <Spinner
+        android:id="@+id/spinner_opciones"
+        android:layout_width="180dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/ruleta_view_xml"
+        app:layout_constraintEnd_toStartOf="@+id/toggle_deshabilitadas"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/toggle_deshabilitadas"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="12dp"
+        android:text="Mostrar deshabilitadas"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/ruleta_view_xml"
+        app:layout_constraintEnd_toStartOf="@+id/ruleta_add_option_ic_img_xml"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.571" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

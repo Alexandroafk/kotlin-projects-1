@@ -8,6 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="on_surface">#FF000000</color> <!-- Negro en modo claro -->
-    <color name="disabled_color">#757575</color> <!-- Gris medio -->
+    <color name="on_surface">#FFFFFFFF</color> <!-- Blanco en modo oscuro -->
+    <color name="disabled_color">#9E9E9E</color> <!-- Gris claro -->
 </resources>
